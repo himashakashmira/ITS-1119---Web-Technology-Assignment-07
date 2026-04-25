@@ -676,24 +676,36 @@
         </div>
     </div>
 
-    <script src="script.js"></script>
-
-    <!-- JQuery මුලින්ම load කරන්න -->
+    <!-- JQuery MUST load before module scripts -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Toast animation -->
+    <style>
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+    </style>
 
     <!-- Main SPA Controller & Module Loader -->
     <script type="module">
-        // සියලුම Controller functions import කිරීම
-        import { saveCustomer } from './controller/CustomerController.js';
-        import { saveItem } from './controller/ItemController.js';
-        import { initOrderPage, addToCart, calculateTotal } from './controller/OrderController.js';
+        // ── Import all controller functions ──────────────────────────
+        import { saveCustomer, loadCustomers }       from './controller/CustomerController.js';
+        import { saveItem, loadItems, updateStoreStats } from './controller/ItemController.js';
+        import {
+            initOrderPage,
+            addToCart,
+            calculateTotal,
+            loadOrderHistory
+        } from './controller/OrderController.js';
 
-        window.saveCustomer = saveCustomer;
-        window.saveItem = saveItem;
-        window.addToCart = addToCart;
+        // ── Expose to global (onclick= handlers need window scope) ───
+        window.saveCustomer  = saveCustomer;
+        window.saveItem      = saveItem;
+        window.addToCart     = addToCart;
         window.calculateTotal = calculateTotal;
 
-        // --- 1. LOGIN LOGIC ---
+        // ── 1. LOGIN ─────────────────────────────────────────────────
         window.handleLogin = function (event) {
             event.preventDefault();
             const username = $('#loginUsername').val();
@@ -704,35 +716,42 @@
                 $('#navbar, .main').show();
                 navigateTo('home');
             } else {
-                $('#loginError').text('Invalid credentials!').addClass('show');
+                $('#loginError').text('Invalid username or password!').addClass('show');
             }
-        }
+        };
 
         window.logout = function () {
-            if (confirm('Are you sure?')) {
-                location.reload(); // සරලවම refresh කිරීමෙන් logout විය හැක
+            if (confirm('Are you sure you want to logout?')) {
+                location.reload();
             }
-        }
+        };
 
-        // --- 2. SPA NAVIGATION LOGIC ---
+        // ── 2. SPA NAVIGATION ────────────────────────────────────────
         window.navigateTo = function (pageId) {
-            // සියලුම පිටු සඟවන්න
             $('.page').removeClass('active').hide();
             $('.nav-link').removeClass('active');
 
-            // අදාළ පිටුව පමණක් පෙන්වන්න
             $('#' + pageId).addClass('active').fadeIn(400);
             $(`[data-page="${pageId}"]`).addClass('active');
 
-            // Order page එකට යනවා නම් එය initialize කරන්න (Auto-ID, Date ආදියට)
+            // Page-specific initialisation
             if (pageId === 'order') {
                 initOrderPage();
             }
-        }
+            if (pageId === 'orderhistory') {
+                loadOrderHistory();
+            }
+            if (pageId === 'store') {
+                loadItems();
+                updateStoreStats();
+            }
+            if (pageId === 'customers') {
+                loadCustomers();
+            }
+        };
 
-        // පිටුව මුලින්ම load වන විට login page එක පෙන්වන්න
+        // ── 3. INITIAL SETUP ─────────────────────────────────────────
         $(document).ready(function () {
-            // Navbar එක සහ Main content එක මුලින් හංගන්න
             $('#navbar, .main').hide();
         });
     </script>

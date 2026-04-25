@@ -1,7 +1,7 @@
 import { Customer } from '../model/Customer.js';
 import { customers } from '../db/DB.js';
 
-// Tab key disable කිරීම (Assignment requirement)
+// Tab key disable කිරීම
 $(document).on('keydown', function (e) {
     if (e.which === 9) e.preventDefault();
 });
@@ -104,3 +104,11 @@ export function loadCustomers() {
 function clearFields() {
     $('#customerId, #customerName, #customerAddress, #customerSalary').val("");
 }
+
+// Live search 
+$(document).on('input', '#customerSearch', function () {
+    let q = $(this).val().toLowerCase();
+    $('#customersTableBody tr').each(function () {
+        $(this).toggle($(this).text().toLowerCase().includes(q));
+    });
+});
