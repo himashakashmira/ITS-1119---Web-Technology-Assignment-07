@@ -1,7 +1,6 @@
 import { Customer } from '../model/Customer.js';
 import { customers } from '../db/DB.js';
 
-// Tab key disable කිරීම
 $(document).on('keydown', function (e) {
     if (e.which === 9) e.preventDefault();
 });
@@ -24,7 +23,6 @@ export function saveCustomer() {
     clearFields();
 }
 
-// Table එකේ Row එකක් click කරද්දී Data පිරවීමට
 window.bindCustomerRow = function (id) {
     let customer = customers.find(c => c._id === id);
     if (customer) {
@@ -33,9 +31,9 @@ window.bindCustomerRow = function (id) {
         $('#customerAddress').val(customer._address);
         $('#customerSalary').val(customer._salary);
 
-        // Save button එක Update button එකක් බවට පත් කිරීම
+        // Save button convert update button
         $('#customerSaveBtn').html('<i class="fas fa-edit"></i> Update');
-        // පරණ onclick එක අයින් කරලා updateCustomer function එකට සම්බන්ධ කිරීම
+        // old onclick remove and connect updateCustomer function
         $('#customerSaveBtn').attr('onclick', 'updateCustomer()');
     }
 }
@@ -58,7 +56,7 @@ window.updateCustomer = function () {
 
 // Delete Logic
 window.deleteCust = function (id) {
-    // Event එක stop කරන්න නැත්නම් row click එකත් වැඩ කරනවා
+    // Event stop or row click
     event.stopPropagation();
 
     if (confirm("Are you sure you want to delete this customer?")) {
@@ -72,7 +70,7 @@ window.deleteCust = function (id) {
     }
 }
 
-// Form එක Clear කිරීම
+// clear form
 window.clearCustomerForm = function () {
     $('#customerId').val("").prop('disabled', false);
     $('#customerName').val("");

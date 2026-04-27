@@ -689,7 +689,7 @@
 
     <!-- Main SPA Controller & Module Loader -->
     <script type="module">
-        // ── Import all controller functions ──────────────────────────
+        // Import all controller functions
         import { saveCustomer, loadCustomers }       from './controller/CustomerController.js';
         import { saveItem, loadItems, updateStoreStats } from './controller/ItemController.js';
         import {
@@ -699,13 +699,12 @@
             loadOrderHistory
         } from './controller/OrderController.js';
 
-        // ── Expose to global (onclick= handlers need window scope) ───
         window.saveCustomer  = saveCustomer;
         window.saveItem      = saveItem;
         window.addToCart     = addToCart;
         window.calculateTotal = calculateTotal;
 
-        // ── 1. LOGIN ─────────────────────────────────────────────────
+        // LOGIN
         window.handleLogin = function (event) {
             event.preventDefault();
             const username = $('#loginUsername').val();
@@ -726,7 +725,7 @@
             }
         };
 
-        // ── 2. SPA NAVIGATION ────────────────────────────────────────
+        // SPA NAVIGATION
         window.navigateTo = function (pageId) {
             $('.page').removeClass('active').hide();
             $('.nav-link').removeClass('active');
@@ -750,7 +749,7 @@
             }
         };
 
-        // ── 3. INITIAL SETUP ─────────────────────────────────────────
+        // INITIAL SETUP
         $(document).ready(function () {
             $('#navbar, .main').hide();
         });

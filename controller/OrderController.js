@@ -26,7 +26,7 @@ export function initOrderPage() {
     $('#itemDetailsSection').hide();
 }
 
-// Load customer & item dropdowns
+// Load customer & item
 function loadCombos() {
     $('#orderCustomer').empty().append('<option value="">-- Select Customer --</option>');
     customers.forEach(c => {
