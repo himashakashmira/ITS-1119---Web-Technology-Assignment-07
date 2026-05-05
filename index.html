@@ -57,48 +57,16 @@
     <!-- Login Page -->
     <div class="login-page active" id="loginPage">
         <div class="login-container">
-            <!-- Left Side: Branding -->
+            <!-- Branding -->
             <div class="login-branding">
                 <div class="login-logo">
                     <i class="fas fa-shopping-cart"></i>
                 </div>
                 <h2 class="login-branding-title">PC Zone</h2>
                 <p class="login-branding-subtitle">Smart Solution</p>
-
-                <div class="login-features">
-                    <div class="login-feature">
-                        <div class="login-feature-icon">
-                            <i class="fas fa-users"></i>
-                        </div>
-                        <div class="login-feature-text">
-                            <strong>Customer Management</strong>
-                            <small>Manage profiles & relationships</small>
-                        </div>
-                    </div>
-
-                    <div class="login-feature">
-                        <div class="login-feature-icon">
-                            <i class="fas fa-box"></i>
-                        </div>
-                        <div class="login-feature-text">
-                            <strong>Inventory Control</strong>
-                            <small>Track stock & optimize levels</small>
-                        </div>
-                    </div>
-
-                    <div class="login-feature">
-                        <div class="login-feature-icon">
-                            <i class="fas fa-shopping-cart"></i>
-                        </div>
-                        <div class="login-feature-text">
-                            <strong>Invoice Management</strong>
-                            <small>Process orders seamlessly</small>
-                        </div>
-                    </div>
-                </div>
             </div>
 
-            <!-- Right Side: Login Form -->
+            <!-- Login Form -->
             <div class="login-form-section">
                 <h3 class="login-form-title">Welcome Back</h3>
                 <p class="login-form-subtitle">Sign in to your account</p>
@@ -127,11 +95,6 @@
 
                 <div class="login-error" id="loginError"></div>
 
-                <div class="demo-credentials">
-                    <p><strong>Demo Account</strong></p>
-                    <p>Username: <strong>admin</strong></p>
-                    <p>Password: <strong>admin123</strong></p>
-                </div>
             </div>
         </div>
     </div>
@@ -141,8 +104,8 @@
         <!-- Home Page -->
         <div class="page active" id="home">
             <div class="page-header text-center">
-                <h2>Welcome to POS System</h2>
-                <p>A comprehensive point-of-sale management platform for modern retail</p>
+                <h2>Welcome to PC Zone</h2>
+                <p>Smart Solution</p>
             </div>
 
             <div style="text-align: center; margin-bottom: 2rem;">
@@ -160,7 +123,7 @@
                     <div class="stat-card">
                         <div class="stat-content">
                             <h3>Total Customers</h3>
-                            <div class="stat-value">1,234</div>
+                            <div class="stat-value">0</div>
                         </div>
                         <div class="stat-icon blue"><i class="fas fa-users"></i></div>
                     </div>
@@ -169,7 +132,7 @@
                     <div class="stat-card">
                         <div class="stat-content">
                             <h3>Inventory Items</h3>
-                            <div class="stat-value">5,678</div>
+                            <div class="stat-value">0</div>
                         </div>
                         <div class="stat-icon orange"><i class="fas fa-box"></i></div>
                     </div>
@@ -178,7 +141,7 @@
                     <div class="stat-card">
                         <div class="stat-content">
                             <h3>Orders Today</h3>
-                            <div class="stat-value">92</div>
+                            <div class="stat-value">0</div>
                         </div>
                         <div class="stat-icon green"><i class="fas fa-shopping-cart"></i></div>
                     </div>
@@ -187,7 +150,7 @@
                     <div class="stat-card">
                         <div class="stat-content">
                             <h3>Revenue</h3>
-                            <div class="stat-value">Rs. 45,230</div>
+                            <div class="stat-value">Rs. 0</div>
                         </div>
                         <div class="stat-icon purple"><i class="fas fa-dollar-sign"></i></div>
                     </div>
@@ -231,26 +194,6 @@
                         </div>
                     </a>
                 </div>
-            </div>
-
-            <!-- Quick Actions -->
-            <div class="glass-lg p-8 text-center">
-                <div style="font-size: 2.5rem; color: #a855f7; opacity: 0.8; margin-bottom: 1rem;">
-                    <i class="fas fa-chart-line"></i>
-                </div>
-                <h3 style="font-size: 1.5rem; font-weight: 700; color: #1f2937; margin-bottom: 1rem;">Ready to Get
-                    Started?</h3>
-                <p
-                    style="color: #6b7280; margin-bottom: 2rem; max-width: 42rem; margin-left: auto; margin-right: auto;">
-                    Our POS system helps you manage customers, inventory, and orders efficiently. Start by exploring
-                    customer management or creating your first order.
-                </p>
-                <button onclick="navigateTo('customers')" class="btn btn-primary">
-                    Customer Management
-                </button>
-                <button onclick="navigateTo('store')" class="btn btn-secondary" style="margin-left: 1rem;">
-                    Store Management
-                </button>
             </div>
         </div>
 
@@ -649,11 +592,7 @@
                                 <th>Order ID</th>
                                 <th>Date</th>
                                 <th>Customer</th>
-                                <th>Items</th>
-                                <th>Subtotal</th>
-                                <th>Discount</th>
                                 <th>Total</th>
-                                <th>Payment</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -676,21 +615,63 @@
         </div>
     </div>
 
-    <!-- JQuery MUST load before module scripts -->
+    <!-- Order Details Modal -->
+    <div id="orderDetailModal"
+        style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7); backdrop-filter:blur(5px); z-index:10000; align-items:center; justify-content:center; padding:1rem;">
+        <div
+            style="background:#1a1a2e; border-radius:15px; padding:25px; max-width:600px; width:100%; color:white; border:1px solid #7d5fff;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+                <h3 id="lblOrderId" style="color:#a855f7;">Order Receipt</h3>
+                <button onclick="$('#orderDetailModal').hide()"
+                    style="background:none; border:none; color:white; font-size:20px; cursor:pointer;">✕</button>
+            </div>
+            <p style="font-size:14px; margin-bottom:10px;">Date: <span id="lblOrderDate"></span> | Customer: <span
+                    id="lblCustName"></span></p>
+
+            <table width="100%" border="1"
+                style="border-collapse:collapse; margin-bottom:15px; font-size:14px; text-align:left; border-color:rgba(255,255,255,0.1);">
+                <thead>
+                    <tr style="background:rgba(125,95,255,0.2);">
+                        <th style="padding:8px;">Item</th>
+                        <th style="padding:8px;">Qty</th>
+                        <th style="padding:8px;">Price</th>
+                        <th style="padding:8px;">Total</th>
+                    </tr>
+                </thead>
+                <tbody id="lblOrderTableBody"></tbody>
+            </table>
+
+            <div style="text-align:right; border-top:1px solid rgba(255,255,255,0.1); padding-top:10px;">
+                <p>Subtotal: Rs. <span id="lblSubtotal"></span></p>
+                <p>Discount: - Rs. <span id="lblDiscount"></span></p>
+                <h4 style="color:#a855f7;">Net Total: Rs. <span id="lblNetTotal"></span></h4>
+                <p style="color:#16a34a;">Balance: Rs. <span id="lblBalance"></span></p>
+            </div>
+        </div>
+    </div>
+
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-    <!-- Toast animation -->
+
     <style>
         @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(16px); }
-            to   { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(16px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
     </style>
 
     <!-- Main SPA Controller & Module Loader -->
     <script type="module">
         // Import all controller functions
-        import { saveCustomer, loadCustomers }       from './controller/CustomerController.js';
+        import { saveCustomer, loadCustomers } from './controller/CustomerController.js';
         import { saveItem, loadItems, updateStoreStats } from './controller/ItemController.js';
         import {
             initOrderPage,
@@ -699,9 +680,9 @@
             loadOrderHistory
         } from './controller/OrderController.js';
 
-        window.saveCustomer  = saveCustomer;
-        window.saveItem      = saveItem;
-        window.addToCart     = addToCart;
+        window.saveCustomer = saveCustomer;
+        window.saveItem = saveItem;
+        window.addToCart = addToCart;
         window.calculateTotal = calculateTotal;
 
         // LOGIN
@@ -754,6 +735,7 @@
             $('#navbar, .main').hide();
         });
     </script>
+
 
 </body>
 

@@ -5,7 +5,7 @@ $(document).on('keydown', function (e) {
     if (e.which === 9) e.preventDefault();
 });
 
-const idRegEx = /^(C00-)[0-9]{3}$/;
+const idRegEx = /^(C)[0-9]{3}$/;
 const nameRegEx = /^[A-z ]{5,20}$/;
 
 export function saveCustomer() {
@@ -14,7 +14,7 @@ export function saveCustomer() {
     let address = $('#customerAddress').val();
     let salary = $('#customerSalary').val();
 
-    if (!idRegEx.test(id)) { alert("Invalid ID (Ex: C00-001)"); return; }
+    if (!idRegEx.test(id)) { alert("Invalid ID (Ex: C001)"); return; }
     if (!nameRegEx.test(name)) { alert("Invalid Name (5-20 chars)"); return; }
 
     let newCustomer = new Customer(id, name, address, parseFloat(salary));

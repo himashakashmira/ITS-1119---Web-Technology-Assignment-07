@@ -2,7 +2,7 @@ import { Item } from '../model/Item.js';
 import { items } from '../db/DB.js';
 
 // Regex Patterns
-const codeRegEx     = /^(I00-)[0-9]{3}$/;
+const codeRegEx     = /^(I)[0-9]{3}$/;
 const itemNameRegEx = /^[A-Za-z0-9 ]{3,30}$/;
 const priceRegEx    = /^[0-9]{1,10}(\.[0-9]{1,2})?$/;
 const qtyRegEx      = /^[0-9]{1,5}$/;
@@ -14,7 +14,7 @@ export function saveItem() {
     let price = $('#itemPrice').val().trim();
     let qty   = $('#itemQuantity').val().trim();
 
-    if (!codeRegEx.test(code))     { alert('Invalid Item Code (Ex: I00-001)'); $('#itemCode').focus(); return; }
+    if (!codeRegEx.test(code))     { alert('Invalid Item Code (Ex: I001)'); $('#itemCode').focus(); return; }
     if (items.find(i => i._code === code)) { alert('Item Code already exists!'); $('#itemCode').focus(); return; }
     if (!itemNameRegEx.test(name)) { alert('Invalid Item Name (3-30 chars)');  $('#itemName').focus(); return; }
     if (!priceRegEx.test(price))   { alert('Invalid Price (Ex: 120.00)');      $('#itemPrice').focus(); return; }
@@ -92,7 +92,7 @@ function clearItemFields() {
     $('#itemCode').focus();
 }
 
-// Load items into table
+// Load items in table
 export function loadItems() {
     $('#itemsTableBody').empty();
     items.forEach(item => {
@@ -137,7 +137,7 @@ $(document).on('input', '#itemSearch', function () {
     });
 });
 
-// Toast helper (shared utility)
+
 window.showToast = function (msg, type = 'success') {
     let colors = { success: '#16a34a', danger: '#dc2626', info: '#a855f7' };
     let toast = $(`<div style="
