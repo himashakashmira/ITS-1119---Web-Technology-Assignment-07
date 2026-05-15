@@ -2,29 +2,30 @@ import { Item } from '../model/Item.js';
 import { items } from '../db/DB.js';
 
 // Regex Patterns
-const codeRegEx     = /^(I)[0-9]{3}$/;
+const codeRegEx = /^(I)[0-9]{3}$/;
 const itemNameRegEx = /^[A-Za-z0-9 ]{3,30}$/;
-const priceRegEx    = /^[0-9]{1,10}(\.[0-9]{1,2})?$/;
-const qtyRegEx      = /^[0-9]{1,5}$/;
+const priceRegEx = /^[0-9]{1,10}(\.[0-9]{1,2})?$/;
+const qtyRegEx = /^[0-9]{1,5}$/;
 
 // Save (Add new item)
 export function saveItem() {
-    let code  = $('#itemCode').val().trim();
-    let name  = $('#itemName').val().trim();
+    let code = $('#itemCode').val().trim();
+    let name = $('#itemName').val().trim();
     let price = $('#itemPrice').val().trim();
-    let qty   = $('#itemQuantity').val().trim();
+    let qty = $('#itemQuantity').val().trim();
 
-    if (!codeRegEx.test(code))     { alert('Invalid Item Code (Ex: I001)'); $('#itemCode').focus(); return; }
+    if (!codeRegEx.test(code)) { alert('Invalid Item Code (Ex: I001)'); $('#itemCode').focus(); return; }
     if (items.find(i => i._code === code)) { alert('Item Code already exists!'); $('#itemCode').focus(); return; }
-    if (!itemNameRegEx.test(name)) { alert('Invalid Item Name (3-30 chars)');  $('#itemName').focus(); return; }
-    if (!priceRegEx.test(price))   { alert('Invalid Price (Ex: 120.00)');      $('#itemPrice').focus(); return; }
-    if (!qtyRegEx.test(qty))       { alert('Invalid Quantity (numbers only)'); $('#itemQuantity').focus(); return; }
+    if (!itemNameRegEx.test(name)) { alert('Invalid Item Name (3-30 chars)'); $('#itemName').focus(); return; }
+    if (!priceRegEx.test(price)) { alert('Invalid Price (Ex: 120.00)'); $('#itemPrice').focus(); return; }
+    if (!qtyRegEx.test(qty)) { alert('Invalid Quantity (numbers only)'); $('#itemQuantity').focus(); return; }
 
     items.push(new Item(code, name, parseFloat(price), parseInt(qty)));
     loadItems();
     updateStoreStats();
     clearItemFields();
     showToast('Item added successfully!', 'success');
+    if (typeof window.updateDashboard === 'function') window.updateDashboard();
 }
 
 window.bindItemRow = function (code) {
@@ -48,22 +49,23 @@ window.updateItem = function () {
     let item = items.find(i => i._code === code);
     if (!item) return;
 
-    let name  = $('#itemName').val().trim();
+    let name = $('#itemName').val().trim();
     let price = $('#itemPrice').val().trim();
-    let qty   = $('#itemQuantity').val().trim();
+    let qty = $('#itemQuantity').val().trim();
 
-    if (!itemNameRegEx.test(name)) { alert('Invalid Item Name (3-30 chars)');  return; }
-    if (!priceRegEx.test(price))   { alert('Invalid Price (Ex: 120.00)');      return; }
-    if (!qtyRegEx.test(qty))       { alert('Invalid Quantity');                return; }
+    if (!itemNameRegEx.test(name)) { alert('Invalid Item Name (3-30 chars)'); return; }
+    if (!priceRegEx.test(price)) { alert('Invalid Price (Ex: 120.00)'); return; }
+    if (!qtyRegEx.test(qty)) { alert('Invalid Quantity'); return; }
 
-    item._name  = name;
+    item._name = name;
     item._price = parseFloat(price);
-    item._qty   = parseInt(qty);
+    item._qty = parseInt(qty);
 
     loadItems();
     updateStoreStats();
     clearItemFields();
     showToast('Item updated!', 'info');
+    if (typeof window.updateDashboard === 'function') window.updateDashboard();
 };
 
 // Delete item
@@ -77,6 +79,7 @@ window.deleteItem = function (code) {
         updateStoreStats();
         clearItemFields();
         showToast('Item deleted.', 'danger');
+        if (typeof window.updateDashboard === 'function') window.updateDashboard();
     }
 };
 

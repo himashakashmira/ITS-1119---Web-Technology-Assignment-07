@@ -123,7 +123,7 @@
                     <div class="stat-card">
                         <div class="stat-content">
                             <h3>Total Customers</h3>
-                            <div class="stat-value">0</div>
+                            <div class="stat-value" id="dashboardTotalCustomers">0</div>
                         </div>
                         <div class="stat-icon blue"><i class="fas fa-users"></i></div>
                     </div>
@@ -132,7 +132,7 @@
                     <div class="stat-card">
                         <div class="stat-content">
                             <h3>Inventory Items</h3>
-                            <div class="stat-value">0</div>
+                            <div class="stat-value" id="dashboardInventoryItems">0</div>
                         </div>
                         <div class="stat-icon orange"><i class="fas fa-box"></i></div>
                     </div>
@@ -141,7 +141,7 @@
                     <div class="stat-card">
                         <div class="stat-content">
                             <h3>Orders Today</h3>
-                            <div class="stat-value">0</div>
+                            <div class="stat-value" id="dashboardOrdersToday">0</div>
                         </div>
                         <div class="stat-icon green"><i class="fas fa-shopping-cart"></i></div>
                     </div>
@@ -150,7 +150,7 @@
                     <div class="stat-card">
                         <div class="stat-content">
                             <h3>Revenue</h3>
-                            <div class="stat-value">Rs. 0</div>
+                            <div class="stat-value" id="dashboardRevenue">Rs. 0</div>
                         </div>
                         <div class="stat-icon purple"><i class="fas fa-dollar-sign"></i></div>
                     </div>
@@ -679,11 +679,23 @@
             calculateTotal,
             loadOrderHistory
         } from './controller/OrderController.js';
+        import { customers, items, orders } from './db/DB.js';
 
         window.saveCustomer = saveCustomer;
         window.saveItem = saveItem;
         window.addToCart = addToCart;
         window.calculateTotal = calculateTotal;
+
+        window.updateDashboard = function () {
+            const today = new Date().toISOString().split('T')[0];
+            const todayOrders = orders.filter(o => o._date === today);
+            const todayRevenue = todayOrders.reduce((sum, o) => sum + o._total, 0);
+
+            $('#dashboardTotalCustomers').text(customers.length);
+            $('#dashboardInventoryItems').text(items.length);
+            $('#dashboardOrdersToday').text(todayOrders.length);
+            $('#dashboardRevenue').text('Rs. ' + todayRevenue.toFixed(2));
+        };
 
         // LOGIN
         window.handleLogin = function (event) {
@@ -727,6 +739,9 @@
             }
             if (pageId === 'customers') {
                 loadCustomers();
+            }
+            if (pageId === 'home') {
+                updateDashboard();
             }
         };
 

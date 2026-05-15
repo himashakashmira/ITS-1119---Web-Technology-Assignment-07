@@ -152,6 +152,7 @@ window.purchaseOrder = function () {
 
     alert(`Order ${orderId} Placed!`);
     if (typeof loadOrderHistory === 'function') loadOrderHistory();
+    if (typeof window.updateDashboard === 'function') window.updateDashboard();
     initOrderPage();
 };
 
@@ -190,6 +191,5 @@ window.viewOrderDetails = function (orderId) {
     });
     $('#lblOrderTableBody').html(rows);
 
-    // 3. Modal එක පෙන්වන්න
     $('#orderDetailModal').css('display', 'flex');
 };

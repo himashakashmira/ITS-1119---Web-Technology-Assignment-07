@@ -16,11 +16,13 @@ export function saveCustomer() {
 
     if (!idRegEx.test(id)) { alert("Invalid ID (Ex: C001)"); return; }
     if (!nameRegEx.test(name)) { alert("Invalid Name (5-20 chars)"); return; }
+    if (customers.find(c => c._id === id)) { alert("Customer ID already exists!"); return; }
 
     let newCustomer = new Customer(id, name, address, parseFloat(salary));
     customers.push(newCustomer);
     loadCustomers();
-    clearFields();
+    clearCustomerForm();
+    if (typeof window.updateDashboard === 'function') window.updateDashboard();
 }
 
 window.bindCustomerRow = function (id) {
@@ -34,7 +36,7 @@ window.bindCustomerRow = function (id) {
         // Save button convert update button
         $('#customerSaveBtn').html('<i class="fas fa-edit"></i> Update');
         // old onclick remove and connect updateCustomer function
-        $('#customerSaveBtn').attr('onclick', 'updateCustomer()');
+        $('[onclick="saveCustomer()"]').attr('onclick', 'updateCustomer()');
     }
 }
 
@@ -50,7 +52,8 @@ window.updateCustomer = function () {
 
         alert("Customer Updated!");
         loadCustomers();
-        clearCustomerFields();
+        clearCustomerForm();
+        if (typeof window.updateDashboard === 'function') window.updateDashboard();
     }
 }
 
@@ -64,8 +67,9 @@ window.deleteCust = function (id) {
         if (index > -1) {
             customers.splice(index, 1);
             loadCustomers();
-            clearCustomerFields();
+            clearCustomerForm();
             alert("Customer Deleted!");
+            if (typeof window.updateDashboard === 'function') window.updateDashboard();
         }
     }
 }
@@ -77,7 +81,7 @@ window.clearCustomerForm = function () {
     $('#customerAddress').val("");
     $('#customerSalary').val("");
     $('#customerSaveBtn').html('<i class="fas fa-save"></i> Save');
-    $('#customerSaveBtn').attr('onclick', 'saveCustomer()');
+    $('[onclick="updateCustomer()"]').attr('onclick', 'saveCustomer()');
 }
 
 export function loadCustomers() {
